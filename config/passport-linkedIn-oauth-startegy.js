@@ -1,17 +1,16 @@
 const passport = require("passport");
-const googleStrategy = require("passport-google-oauth20").Strategy;
-const crypto = require("crypto");
-const User = require("../models/user");
 const dotenv = require("dotenv").config();
+const LinkedInStrategy = require("passport-linkedin-oauth2").Strategy;
+const User = require("../models/user");
 
-//tell passport to use a new Strategy to google login
 passport.use(
-  new googleStrategy(
+  new LinkedInStrategy(
     {
-      clientID: process.env.CLIENT_ID_GOOGLE,
-      clientSecret: process.env.CLIENT_SECRET_GOOGLE,
-      callbackURL: process.env.CALLBACK_URL_GOOGLE,
-      passRequestToCallback: true,
+      clientID: process.env.CLIENT_ID_LINKEDIN,
+      clientSecret: process.env.CLIENT_SECRET_LINKEDIN,
+      callbackURL: process.env.CALLBACK_URL_LINKEDIN,
+      scope: ["r_emailaddress", "r_liteprofile"],
+      state: true,
     },
     function (accessToken, refreshToken, profile, done) {
       User.findOne({ email: profile.emails[0].value }).exec(function (
@@ -19,13 +18,17 @@ passport.use(
         user
       ) {
         if (err) {
-          console.log("error in finding user in google strategy passport", err);
+          console.log(
+            "error in finding user in linkedin strategy passport",
+            err
+          );
           return;
         }
-        console.log("proffffileeee", profile);
-        console.log("AAAAAAAAAAAAAAAA", accessToken);
+        console.log("PROFILE OF THE USER", profile);
+        console.log("ACCESSS Token", accessToken);
         if (user) {
           // If user is found , set this user as req.user
+          console.log("user", user);
           return done(null, user);
         } else {
           //If not found, create new user
@@ -33,12 +36,12 @@ passport.use(
             {
               name: profile.name.givenName,
               email: profile.emails[0].value,
-              password: crypto.randomBytes(12).toString("hex"),
+              pic: profile.photos[0].value,
               token: accessToken,
             },
             function (error, user) {
               if (error) {
-                console.log("error in creating user google strategy", error);
+                console.log("error in creating user linkedin strategy", error);
                 return;
               }
               console.log("uuuuuuuuuuuuuuuuuuuuu", user);
@@ -52,7 +55,7 @@ passport.use(
 );
 
 passport.serializeUser(function (user, done) {
-  done(null, user.id);
+  done(null, user);
 });
 
 passport.deserializeUser(function (id, done) {

@@ -360,7 +360,7 @@ var htmlString = `<!doctype html>
               <tr>
                 <td style="" class="wrapper">
                   <table role="presentation" border="0" cellpadding="0" cellspacing="0">
-                   <tr><td align="left" style="border-bottom: 1px solid #f1f1f1; padding-bottom: 15px;"><img style="width: 100%; max-width: 147px;" class="img-responsive" src=""></td></tr>
+                   <tr><td align="left" style="border-bottom: 1px solid #f1f1f1; padding-bottom: 15px;"><img style="width: 100%; max-width: 147px;" class="img-responsive" src="/logo.png"></td></tr>
                    <tr><td>&nbsp;</td></tr> 
                     <tr><td>&nbsp;</td></tr> 
                     <tr><td>&nbsp;</td></tr> 

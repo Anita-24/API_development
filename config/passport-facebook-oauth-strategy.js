@@ -7,9 +7,9 @@ try {
     new FacebookStrategy(
       {
         // pull in our app id and secret from our auth.js file
-        clientID: "3174706976115356",
-        clientSecret: "6e0534749ebef08a30643743ce2da73f",
-        callbackURL: "http://localhost:3000/users/auth/facebook/callback",
+        clientID: process.env.CLIENT_ID_FACEBOOK,
+        clientSecret: process.env.CLEINT_SECRET_FACEBOOK,
+        callbackURL: process.env.CALLBACK_URL_FACEBOOK,
       }, // facebook will send back the token and profile
       function (accessToken, refreshToken, profile, done) {
         User.findOne({ email: profile.emails[0].value }).exec(function (
