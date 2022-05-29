@@ -41,7 +41,6 @@ passport.use(
                 console.log("error in creating user google strategy", error);
                 return;
               }
-              console.log("uuuuuuuuuuuuuuuuuuuuu", user);
               return done(null, user);
             }
           );

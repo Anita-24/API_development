@@ -33,10 +33,12 @@ const userSchema = Schema(
     price: {
       type: "String",
     },
+    avatar: {},
     token: String,
     tokenExpiration: Date,
     category: {
       type: "String",
+      required: true,
       enum: ["gst", "music", "fashion"],
       default: "gst",
     },

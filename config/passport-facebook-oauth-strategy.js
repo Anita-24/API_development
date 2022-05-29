@@ -56,7 +56,7 @@ try {
     )
   );
 } catch (error) {
-  console.log("error>>>>>>>>>>>>>>>>>>>>>>>>>>", error);
+  console.log("error", error);
 }
 
 // used to serial or put it into the cookie - the current logged in user

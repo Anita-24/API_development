@@ -44,7 +44,7 @@ passport.use(
                 console.log("error in creating user linkedin strategy", error);
                 return;
               }
-              console.log("uuuuuuuuuuuuuuuuuuuuu", user);
+              console.log("user", user);
               return done(null, user);
             }
           );

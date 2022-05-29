@@ -4,26 +4,34 @@ const JWT = require("jsonwebtoken");
 const { sendTextMessage } = require("../config/message");
 const { SendEmail } = require("../config/email");
 
-exports.register = async (req, res) => {
+exports.getSignUp = async (req, res) => {
+  return res.redirect("/SignUp");
+};
+
+exports.getSignIn = async (req, res) => {
+  return res.redirect("/SignIn");
+};
+
+exports.SignUp = async (req, res) => {
   try {
     const email = req.body.email;
-    const name = req.body.username;
+    const name = req.body.name;
     const phone = req.body.phone;
     const password = req.body.password;
     const confirmPassword = req.body.confirmPassword;
     const dateOfJoining = req.body.dateOfJoining;
-
-    if (password != confirmPassword) {
+    if (password !== confirmPassword) {
       return res.status(404).json({
         message: "password doesn't match",
       });
     }
     const fetchedUser = await User.findOne({ email: email });
+    const hashedPassword = await bcrypt.hash(password, 10);
     if (!fetchedUser) {
       let newUser = await new User({
         name: name,
         email: email,
-        password: password,
+        password: hashedPassword,
         phone: phone,
         dateOfJoining: dateOfJoining,
       });
@@ -47,30 +55,40 @@ exports.register = async (req, res) => {
       });
     }
   } catch (error) {
-    console.log("errrrrrrrorrrr::::::::::::", error);
-    return res.json(500).json({
+    return res.status(500).json({
       error: error,
     });
   }
 };
 
-exports.login = async (req, res) => {
+exports.SignIn = async (req, res) => {
   try {
+    console.log(req.body);
     const email = req.body.email;
+    const password = req.body.password;
     const user = await User.findOne({ email: email });
-    if (!user || user.password != req.body.password) {
-      return res.status(422).json({
-        message: "Invalid username or password!",
-      });
-    }
 
-    const token = await JWT.sign(user.toJSON(), "secret");
-    user.token = token;
-    return res.status(200).json({
-      message: "Sign In Successfully , here is your token ",
-      token: token,
-      data: user,
-    });
+    if (!user) {
+      return res.status(422).json({
+        message: "User Doesn't exists",
+      });
+    } else {
+      const matchPassword = await bcrypt.compare(password, user.password);
+      // const matchPassword = user.email === email;
+      console.log(matchPassword);
+      if (!matchPassword) {
+        return res.status(404).json({
+          message: "Invalid username or password",
+        });
+      } else {
+        const token = JWT.sign(user.toJSON(), process.env.JWT_SECRET);
+        user.token = token;
+        return res.status(200).json({
+          message: "Sign In Successfully , here is your token ",
+          token: token,
+        });
+      }
+    }
   } catch (error) {
     return res.status(500).json({
       message: "Internal Server Error",
@@ -78,10 +96,17 @@ exports.login = async (req, res) => {
   }
 };
 
-exports.logout = async (req, res) => {};
+exports.logout = async (req, res) => {
+  req.logout();
+  return res.status(200).json({
+    message: "Logged Out Successfully!!",
+  });
+};
+
+exports.updateToExtendedUser = async (req, res) => {};
+
 exports.fetchSingleUser = async (req, res) => {
   const email = req.query.email;
-  console.log(email);
   try {
     const user = await User.find({ email: email });
     if (!user) {

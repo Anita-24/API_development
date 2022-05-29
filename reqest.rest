@@ -1,0 +1,13 @@
+GET http://localhost:3000/posts
+
+###
+POST  http://localhost:3000/users/login
+Content-Type: application/json
+Authorization: Bearer
+
+###
+GET http://localhost:3000/user
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjkzNDQ3MTJlMGE4NzA1ZWM3NmYxMTIiLCJuYW1lIjoieHl6IiwiZW1haWwiOiJ4eXpAZ21haWwuY29tIiwicGFzc3dvcmQiOiIkMmIkMTAkeWFFT1hXdy5RSG4yd25yQ2x5WDhmZUg2LjVQeGxRMFlqTGI1bnlNWnk1ZmxLU2NZUDdNZU8iLCJwaG9uZSI6IjY3ODk0NTYzNDUiLCJkYXRlT2ZKb2luaW5nIjoiMjAyMi0wNS0xNVQxODozMDowMC4wMDBaIiwiY2F0ZWdvcnkiOiJnc3QiLCJjcmVhdGVkX2F0IjoiMjAyMi0wNS0yOVQxMDowMToyMS44NjZaIiwidXBkYXRlZF9hdCI6IjIwMjItMDUtMjlUMTA6MDE6MjEuODY2WiIsIl9fdiI6MCwiaWF0IjoxNjUzODE4NDkxfQ.024g02Z3P9OFLzff84ii6Ct5sGWThqOqAgh2BZ6nErA
+
+
